@@ -29,7 +29,7 @@ jobs:
       - name: Docker Login
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Docker build and push
@@ -38,8 +38,8 @@ jobs:
           context: .
           file: Dockerfile
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/todo-backend:latest
-            ${{ secrets.DOCKER_USERNAME }}/todo-backend:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/todo-backend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/todo-backend:${{ github.sha }}
           push: true
   # GitOps Repo Update
   # helm value image ex) DOCKER_USERNAME/k8s-labs-todo-backend:DOCKER_TAG
@@ -53,7 +53,7 @@ jobs:
       - run: |
           git clone https://github.com/Arastoa/cicd_todo_argo
           cd cicd_todo_argo
-          sed -i "s|DOCKER_USERNAME/k8s-labs-todo-backend:DOCKER_TAG|${{ secrets.DOCKER_USERNAME }}/k8s-labs-todo-backend:${{ github.sha }}|" values.yaml
+          sed -i "s|DOCKER_USERNAME/k8s-labs-todo-backend:DOCKER_TAG|${{ secrets.DOCKERHUB_USERNAME }}/k8s-labs-todo-backend:${{ github.sha }}|" values.yaml
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add values.yaml
