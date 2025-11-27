@@ -53,7 +53,7 @@ jobs:
                 cd cicd_todo_argo
                 
                 sed -i "s|DOCKER_USERNAME|${{ secrets.DOCKERHUB_USERNAME }}|" values.yaml
-                sed -i "s|tag:.*|tag: ${{ github.sha }}|" values.yaml
+                sed -i "s|DOCKER_TAG|${{ github.sha }}|" values.yaml
                 
                 cat values.yaml
                 
