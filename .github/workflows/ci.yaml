@@ -47,17 +47,18 @@ jobs:
     runs-on: self-hosted
     needs: build
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}
-      - run: |
-          git clone https://github.com/Arastoa/cicd_todo_argo
-          cd cicd_todo_argo
-          sed -i "s|DOCKER_USERNAME|${{ secrets.DOCKERHUB_USERNAME }}|" values.yaml
-          sed -i "s|DOCKER_TAG|${{ github.sha }}|" values.yaml
-          cat values.yaml
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add values.yaml
-          git commit -m "Update helm value image ${{ github.sha }}"
-          git push
+        - name: Update GitOps repo
+          run: |
+                git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/Arastoa/cicd_todo_argo.git
+                cd cicd_todo_argo
+                
+                # tag 값만 교체 (어떤 값이든 매칭)
+                sed -i "s|tag:.*|tag: ${{ github.sha }}|" values.yaml
+                
+                cat values.yaml
+                
+                git config user.name "github-actions"
+                git config user.email "github-actions@github.com"
+                
+                # 변경사항 있을 때만 commit/push
+                git diff --quiet || (git add values.yaml && git commit -m "Update image tag to ${{ github.sha }}" && git push)
