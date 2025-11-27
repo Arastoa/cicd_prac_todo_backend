@@ -52,7 +52,7 @@ jobs:
                 git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/Arastoa/cicd_todo_argo.git
                 cd cicd_todo_argo
                 
-                # tag 값만 교체 (어떤 값이든 매칭)
+                sed -i "s|DOCKER_USERNAME|${{ secrets.DOCKERHUB_USERNAME }}|" values.yaml
                 sed -i "s|tag:.*|tag: ${{ github.sha }}|" values.yaml
                 
                 cat values.yaml
