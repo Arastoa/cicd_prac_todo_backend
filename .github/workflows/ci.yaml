@@ -38,8 +38,8 @@ jobs:
           context: .
           file: Dockerfile
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/todo-backend:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/todo-backend:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/k8s-labs-todo-backend:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/k8s-labs-todo-backend:${{ github.sha }}
           push: true
   # GitOps Repo Update
   # helm value image ex) DOCKER_USERNAME/k8s-labs-todo-backend:DOCKER_TAG
